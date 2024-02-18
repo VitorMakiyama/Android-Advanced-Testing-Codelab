@@ -16,6 +16,7 @@
 package com.example.android.architecture.blueprints.todoapp.tasks
 
 import android.app.Application
+import android.text.method.TransformationMethod
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
@@ -85,7 +86,7 @@ class TasksViewModel(application: Application) : AndroidViewModel(application) {
     private var resultMessageShown: Boolean = false
 
     // This LiveData depends on another so we can use a transformation.
-    val empty: LiveData<Boolean> = Transformations.map(_items) {
+    val empty: LiveData<Boolean> = _items.map {
         it.isEmpty()
     }
 
