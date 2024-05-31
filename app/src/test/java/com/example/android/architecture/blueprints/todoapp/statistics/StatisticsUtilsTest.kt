@@ -4,7 +4,6 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.junit.jupiter.api.Assertions.*
 
 class StatisticsUtilsTest {
     @Test
