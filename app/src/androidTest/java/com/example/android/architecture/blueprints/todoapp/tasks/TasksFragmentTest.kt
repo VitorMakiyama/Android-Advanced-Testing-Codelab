@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.Navigator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
@@ -45,6 +44,16 @@ class TasksFragmentTest {
 
     @After
     fun cleanupDb() = runTest {
+        /** Differences between runBlocking and runTest:
+         * runTest:
+         *  1 - It skips delay, so your tests run faster.
+         *  2 -It adds testing related assertions to the end of the coroutine.These assertions fail if you
+         *  launch a coroutine and it continues running after the end of the runBlocking lambda (which is a
+         *  possible coroutine leak) or if you have an uncaught exception.
+         *  3 - It gives you timing control over the coroutine execution.
+         *  runBlocking: should be used to block the current thread, for example: to create test doubles
+         *  that will be used in test cases
+        * */
         ServiceLocator.resetRepository()
     }
 

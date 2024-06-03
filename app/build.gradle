@@ -83,6 +83,7 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$dexMakerVersion" // This library is required to use Mockito in an Android project. Mockito needs to generate classes at runtime. On Android, this is done using dex byte code, and so this library enables Mockito to generate objects during runtime on Android.
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion" // This library is made up of external contributions (hence the name) which contain testing code for more advanced views, such as DatePicker and RecyclerView. It also contains Accessibility checks and class called CountingIdlingResource that is covered later.
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion" //for testing Room
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"

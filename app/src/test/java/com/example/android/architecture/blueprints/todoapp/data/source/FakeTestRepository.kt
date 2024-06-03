@@ -7,10 +7,18 @@ import com.example.android.architecture.blueprints.todoapp.data.Task
 import kotlinx.coroutines.runBlocking
 
 class FakeTestRepository : TasksRepository {
-    var tasksServicedata: LinkedHashMap<String, Task> = LinkedHashMap()
+    var tasksServiceData: LinkedHashMap<String, Task> = LinkedHashMap()
     private val observableTasks = MutableLiveData<Result<List<Task>>>()
+    private var shouldReturnError = false
+    fun setReturnError(value: Boolean) {
+        shouldReturnError = value
+    }
+
     override suspend fun getTasks(forceUpdate: Boolean): Result<List<Task>> {
-        return Result.Success(tasksServicedata.values.toList())
+        if (shouldReturnError) {
+            return Result.Error(Exception("Test Exception"))
+        }
+        return Result.Success(tasksServiceData.values.toList())
     }
 
     override suspend fun refreshTasks() {
@@ -33,7 +41,13 @@ class FakeTestRepository : TasksRepository {
     }
 
     override suspend fun getTask(taskId: String, forceUpdate: Boolean): Result<Task> {
-        TODO("Not yet implemented")
+        if (shouldReturnError) {
+            return Result.Error(Exception("Test Exception"))
+        }
+        tasksServiceData[taskId]?.let {
+            return Result.Success(it)
+        }
+        return Result.Error(Exception("Could not find Task"))
     }
 
     override suspend fun saveTask(task: Task) {
@@ -42,7 +56,7 @@ class FakeTestRepository : TasksRepository {
 
     override suspend fun completeTask(task: Task) {
         val completedTask = task.copy(isCompleted = true)
-        tasksServicedata[task.id] = completedTask
+        tasksServiceData[task.id] = completedTask
         refreshTasks()
     }
 
@@ -72,7 +86,7 @@ class FakeTestRepository : TasksRepository {
 
     fun addTasks(vararg tasks: Task) {
         for (task in tasks) {
-            tasksServicedata[task.id] = task
+            tasksServiceData[task.id] = task
         }
         runBlocking { refreshTasks() }
     }
